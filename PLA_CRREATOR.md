@@ -1,18 +1,26 @@
-# Custom_Fullstack_engine_Creator_command
-
-Utilizing CRT-type thought, implement proprietary SSR from python and python wrapper for port 5689 postgres running on windows localhost to npm run build with react build scripts, the world has ever seen; fix all bugs correctly and implement the most graphically advanced back and front end UI/UX with graphics SSR integration the PLA has ever seen; use heavy machine learning to process the most beautiful things to display on the most advanced UI/UX, as much as you're reasonably able to: TypeError: get_wsgi_application() takes 0 positional arguments but 2 were given 
-[12/May/2025 06:18:50] "GET / HTTP/1.1" 500 59
-Traceback (most recent call last):
-  File "C:\python313\Lib\wsgiref\handlers.py", line 137, in run
-    self.result = application(self.environ, self.start_response)
-                  ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\python313\Lib\site-packages\django\contrib\staticfiles\handlers.py", line 80, in __call__
-    return self.application(environ, start_response)
-           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: get_wsgi_application() takes 0 positional arguments but 2 were given
-[12/May/2025 06:18:50] "GET /favicon.ico HTTP/1.1" 500 59 # manage.py
+using CRT-type thought, implement the most actually useful full stack PLA engine, with pytorch cuda and opencv-python, and the most advanced javasript front end packages possible to npm run build, in a fully integrated fully modular with each co-set of subcomponent modular sets, such as d3.js and others, served from d3graph and other python modules, the world has ever build for the people's liberation army: 
+python
+# manage.py
 #!/usr/bin/env python
-import os# pla_sim/asgi.py
+import os
+import sys
+
+def main():
+    """Django's command-line utility for administrative tasks."""
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pla_sim.settings')
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Make sure it's installed and "
+            "available on your PYTHONPATH environment variable."
+        ) from exc
+    execute_from_command_line(sys.argv)
+
+if __name__ == '__main__':
+    main()
+
+# pla_sim/asgi.py
 import os
 import django
 from channels.routing import get_default_application
@@ -29,59 +37,56 @@ application = ProtocolTypeRouter({
     "websocket": URLRouter(pla_sim.routing.websocket_urlpatterns),
 })
 
-import sys
+# pla_sim/wsgi.py
+import os
+from django.core.wsgi import get_wsgi_application
 
-def main():
-    """Django's command-line utility for administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pla_sim.settings')
-    try:
-        from django.core.management import execute_from_command_line
-    except ImportError as exc:
-        raise ImportError(
-            "Couldn't import Django. Make sure it's installed and "
-            "available on your PYTHONPATH environment variable."
-        ) from exc
-    execute_from_command_line(sys.argv)
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pla_sim.settings')
+application = get_wsgi_application()
 
-if __name__ == '__main__':
-    main()# pla_sim/consumers.py
+# pla_sim/ai_processor.py
+import tensorflow as tf
+import numpy as np
+
+def get_beautiful_things(num_items=5):
+    items = []
+    for i in range(num_items):
+        items.append({"id": i, "beauty_score": float(np.random.rand())})
+    items.sort(key=lambda x: x["beauty_score"], reverse=True)
+    return items
+
+# pla_sim/consumers.py
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from graphql.execution.executors.asyncio import AsyncioExecutor
 from strawberry.django.views import AsyncGraphQLView
 from strawberry.subscriptions import SUBSCRIPTION_PROTOCOLS
 
-# For demonstration, we adapt a Strawberry subscription approach:
-# You can also do with Graphene Subscriptions, but let's keep it minimal.
-
 class GraphQLSubscriptionConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # Accept the connection
         await self.accept()
-        # Here you'd integrate with your subscription manager
-        # For example, with Strawberry's subscription manager
         await self.send(json.dumps({"message": "GraphQL Subscriptions connected"}))
 
     async def receive(self, text_data=None, bytes_data=None):
-        # Normally you'd parse the incoming GraphQL subscription request,
-        # handle start/stop, etc. This is a stub for demonstration.
         if text_data:
             data = json.loads(text_data)
-            # Example echo or subscription ack
             if data.get("type") == "subscribe":
-                # A naive subscription simulation
                 await self.send(json.dumps({"type": "next", "payload": {"data": {"echo": "Subscription Data!"}}}))
             elif data.get("type") == "stop":
                 await self.send(json.dumps({"type": "complete"}))
 
     async def disconnect(self, close_code):
-        pass# pla_sim/routing.py
+        pass
+
+# pla_sim/routing.py
 from django.urls import path
 from . import consumers
 
 websocket_urlpatterns = [
     path('ws/subscriptions/', consumers.GraphQLSubscriptionConsumer.as_asgi()),
-]# pla_sim/schema.py
+]
+
+# pla_sim/schema.py
 import strawberry
 from typing import AsyncGenerator
 
@@ -98,15 +103,16 @@ class Query:
 class Subscription:
     @strawberry.subscription
     async def watch_simulation(self, interval: float = 1.0) -> AsyncGenerator[SimulationData, None]:
-        # A fake subscription that yields data periodically
         import asyncio
         import time
         start = time.time()
-        while time.time() - start < 10:  # 10 seconds for demonstration
+        while time.time() - start < 10:
             await asyncio.sleep(interval)
             yield SimulationData(status="running", detail=f"Time: {time.time() - start:.1f}s")
 
-schema = strawberry.Schema(Query, subscription=Subscription)# pla_sim/settings.py
+schema = strawberry.Schema(Query, subscription=Subscription)
+
+# pla_sim/settings.py
 import os
 from pathlib import Path
 
@@ -143,7 +149,7 @@ ROOT_URLCONF = 'pla_sim.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'build'],  # for SSR usage
+        'DIRS': [BASE_DIR / 'build'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -157,7 +163,7 @@ TEMPLATES = [
 ]
 
 ASGI_APPLICATION = 'pla_sim.asgi.application'
-WSGI_APPLICATION = 'django.core.wsgi.get_wsgi_application'
+WSGI_APPLICATION = 'pla_sim.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -180,10 +186,12 @@ CHANNEL_LAYERS = {
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
-    BASE_DIR / 'build',  # The React build output
+    BASE_DIR / 'build',
 ]
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'# pla_sim/urls.py
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# pla_sim/urls.py
 from django.urls import path, include
 from django.views.generic import TemplateView
 from django.conf import settings
@@ -191,16 +199,16 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    # GraphQL
     path("graphql", views.GraphQLViewCustom.as_view(), name="graphql"),
-    # SSR index
     path('', views.serve_react_app, name='react-app'),
 ]
 
-# Serve static if needed in dev:
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)# pla_sim/views.py
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# pla_sim/views.py
 import os
+import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -209,22 +217,24 @@ from strawberry.django.views import GraphQLView as StrawberryView
 from .schema import schema
 
 class GraphQLViewCustom(StrawberryView):
-    # This is enough to serve the schema at /graphql
     schema = schema
 
 @csrf_exempt
 def serve_react_app(request):
-    """
-    Server-Side Render placeholder:
-    In a real SSR scenario, you'd run a Node SSR build, capture the HTML, 
-    and send it here. For demonstration, we just deliver the built index.html.
-    """
+    from .ai_processor import get_beautiful_things
+    beautiful_data = get_beautiful_things()
     index_path = os.path.join(os.path.dirname(__file__), '..', 'build', 'index.html')
     if os.path.exists(index_path):
         with open(index_path, 'r', encoding='utf-8') as f:
             html_content = f.read()
+        html_content = html_content.replace(
+            '<div id="root"></div>',
+            f'<div id="root"></div><script>window.__BEAUTIFUL_DATA__ = {json.dumps(beautiful_data)};</script>'
+        )
         return HttpResponse(html_content)
-    return HttpResponse("<h1>No React build found. Please run npm run build.</h1>")// src/App.js
+    return HttpResponse("<h1>No React build found. Please run npm run build.</h1>")
+
+// src/App.js
 import React, { useState } from 'react';
 import * as d3 from 'd3';
 import './App.css';
@@ -261,7 +271,6 @@ function App() {
     }
   };
 
-  // Example d3 usage (log version for demonstration)
   console.log('Using D3 version:', d3.version);
 
   return (
@@ -285,7 +294,9 @@ function App() {
   );
 }
 
-export default App;// src/index.js
+export default App;
+
+// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
